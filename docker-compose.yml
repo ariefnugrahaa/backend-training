@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    container_name: backend-training-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://db:1433;databaseName=backend_training;encrypt=false;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=Pass@word1
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: backend-training-db
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Pass@word1
+    volumes:
+      - db_data:/var/opt/mssql
+
+volumes:
+  db_data:
